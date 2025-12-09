@@ -1,6 +1,7 @@
 artifacts/
 cache/
 build/
+.states/
 
 node_modules/
 package-lock.json
