@@ -84,6 +84,13 @@ section {
   padding: 0.5rem;
   border-radius: 8px;
   border: 1px solid #e5e7eb;
+  transition: box-shadow 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.card.active-role {
+  border-color: #2563eb;
+  background-color: #eff6ff;
+  box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.4);
 }
 
 .field {
@@ -114,6 +121,41 @@ hr {
   border: none;
   border-top: 1px solid #e5e7eb;
   margin: 0.75rem 0;
+}
+
+.hint {
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+/* Status steps */
+
+.status-steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 0.75rem;
+}
+
+.status-step {
+  font-size: 0.75rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  border: 1px solid #d1d5db;
+  background: #f9fafb;
+  color: #4b5563;
+}
+
+.status-step.active {
+  background: #2563eb;
+  color: white;
+  border-color: #1d4ed8;
+}
+
+.status-step.done {
+  background: #10b981;
+  color: white;
+  border-color: #059669;
 }
 
 #logs pre {

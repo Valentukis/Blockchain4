@@ -7,17 +7,25 @@ const CONTRACT_ABI = [
 
 // Sepolia chainId (0xaa36a7 = 11155111)
 const SEPOLIA_CHAIN_ID_HEX = "0xaa36a7";
+const ETHERSCAN_TX_BASE = "https://sepolia.etherscan.io/tx/";
 
 let provider;
 let signer;
 let contract;
 let currentAccount = null;
 
+// Latest contract state (for role / button updates)
+let contractOwner = null;
+let contractMechanic = null;
+let contractInspector = null;
+let lastStatus = null;
+
 // UI elements
 const connectButton = document.getElementById("connectButton");
 const accountSpan = document.getElementById("account");
 const networkSpan = document.getElementById("network");
 const contractAddressDisplay = document.getElementById("contractAddressDisplay");
+const currentRoleSpan = document.getElementById("currentRole");
 
 const statusSpan = document.getElementById("status");
 const descriptionSpan = document.getElementById("description");
@@ -36,11 +44,20 @@ const markCompletedButton = document.getElementById("markCompletedButton");
 const refundOwnerButton = document.getElementById("refundOwnerButton");
 const confirmCompletionButton = document.getElementById("confirmCompletionButton");
 
+const ownerCard = document.getElementById("ownerCard");
+const mechanicCard = document.getElementById("mechanicCard");
+const inspectorCard = document.getElementById("inspectorCard");
+
 // ===== Helpers =====
 
 function log(message) {
   const timestamp = new Date().toLocaleTimeString();
   logOutput.textContent = `[${timestamp}] ${message}\n` + logOutput.textContent;
+}
+
+function logTx(label, tx) {
+  log(`${label} tx hash: ${tx.hash}`);
+  log(`View on Etherscan: ${ETHERSCAN_TX_BASE}${tx.hash}`);
 }
 
 // Map status code (enum) to human-readable string
@@ -54,6 +71,94 @@ function statusToText(status) {
     5: "Confirmed"
   };
   return mapping[status] ?? `Unknown (${status})`;
+}
+
+function getCurrentRole() {
+  if (!currentAccount) return "Unknown";
+  if (!contractOwner && !contractMechanic && !contractInspector) return "Unknown";
+
+  const acc = currentAccount.toLowerCase();
+  if (contractOwner && acc === contractOwner.toLowerCase()) return "Owner";
+  if (contractMechanic && acc === contractMechanic.toLowerCase()) return "Mechanic";
+  if (contractInspector && acc === contractInspector.toLowerCase()) return "Inspector";
+  return "Unknown";
+}
+
+function updateRoleUI() {
+  const role = getCurrentRole();
+  currentRoleSpan.textContent = role;
+
+  // Clear highlights
+  [ownerCard, mechanicCard, inspectorCard].forEach(card => {
+    card.classList.remove("active-role");
+  });
+
+  if (role === "Owner") ownerCard.classList.add("active-role");
+  if (role === "Mechanic") mechanicCard.classList.add("active-role");
+  if (role === "Inspector") inspectorCard.classList.add("active-role");
+}
+
+function updateStatusSteps(statusNum) {
+  const steps = document.querySelectorAll(".status-step");
+  steps.forEach(step => {
+    const s = Number(step.dataset.status);
+    step.classList.remove("active", "done");
+    if (s < statusNum) {
+      step.classList.add("done");
+    } else if (s === statusNum) {
+      step.classList.add("active");
+    }
+  });
+}
+
+function updateButtonStates(statusNum) {
+  // Disable all by default
+  [
+    createRequestButton,
+    depositButton,
+    acceptJobButton,
+    markCompletedButton,
+    refundOwnerButton,
+    confirmCompletionButton
+  ].forEach(btn => {
+    btn.disabled = true;
+  });
+
+  const role = getCurrentRole();
+
+  // Logic based on contract rules
+  if (role === "Owner") {
+    // createRequest: only in NotCreated
+    if (statusNum === 0) {
+      createRequestButton.disabled = false;
+    }
+    // depositPayment: only in Accepted
+    if (statusNum === 2) {
+      depositButton.disabled = false;
+    }
+  }
+
+  if (role === "Mechanic") {
+    // acceptJob: Requested
+    if (statusNum === 1) {
+      acceptJobButton.disabled = false;
+    }
+    // markCompleted: Paid
+    if (statusNum === 3) {
+      markCompletedButton.disabled = false;
+    }
+    // refundOwner: Accepted or Paid
+    if (statusNum === 2 || statusNum === 3) {
+      refundOwnerButton.disabled = false;
+    }
+  }
+
+  if (role === "Inspector") {
+    // confirmCompletion: Completed
+    if (statusNum === 4) {
+      confirmCompletionButton.disabled = false;
+    }
+  }
 }
 
 // ===== Connection logic =====
@@ -126,6 +231,11 @@ async function loadContractState() {
     ]);
 
     const statusNum = Number(status);
+    lastStatus = statusNum;
+
+    contractOwner = owner;
+    contractMechanic = mechanic;
+    contractInspector = inspector;
 
     statusSpan.textContent = statusToText(statusNum);
     descriptionSpan.textContent = desc;
@@ -133,6 +243,10 @@ async function loadContractState() {
     ownerSpan.textContent = owner;
     mechanicSpan.textContent = mechanic;
     inspectorSpan.textContent = inspector;
+
+    updateStatusSteps(statusNum);
+    updateRoleUI();
+    updateButtonStates(statusNum);
 
     log("Contract state refreshed.");
   } catch (err) {
@@ -163,7 +277,7 @@ async function createRequest() {
     const priceWei = ethers.utils.parseEther(priceEth);
     log("Sending createRequest transaction...");
     const tx = await contract.createRequest(priceWei, desc, inspectorAddr);
-    log(`Tx sent: ${tx.hash}`);
+    logTx("createRequest", tx);
     const receipt = await tx.wait();
     log(`createRequest confirmed in block ${receipt.blockNumber}`);
     await loadContractState();
@@ -188,7 +302,7 @@ async function depositPayment() {
     const valueWei = ethers.utils.parseEther(amountEth);
     log("Sending depositPayment transaction...");
     const tx = await contract.depositPayment({ value: valueWei });
-    log(`Tx sent: ${tx.hash}`);
+    logTx("depositPayment", tx);
     const receipt = await tx.wait();
     log(`depositPayment confirmed in block ${receipt.blockNumber}`);
     await loadContractState();
@@ -198,19 +312,19 @@ async function depositPayment() {
   }
 }
 
-async function simpleCall(methodName) {
+async function simpleCall(methodName, label) {
   if (!contract) return;
 
   try {
-    log(`Sending ${methodName} transaction...`);
+    log(`Sending ${label} transaction...`);
     const tx = await contract[methodName]();
-    log(`Tx sent: ${tx.hash}`);
+    logTx(label, tx);
     const receipt = await tx.wait();
-    log(`${methodName} confirmed in block ${receipt.blockNumber}`);
+    log(`${label} confirmed in block ${receipt.blockNumber}`);
     await loadContractState();
   } catch (err) {
     console.error(err);
-    log(`Error in ${methodName}: ` + (err.data?.message || err.message));
+    log(`Error in ${label}: ` + (err.data?.message || err.message));
   }
 }
 
@@ -221,10 +335,10 @@ refreshButton.addEventListener("click", loadContractState);
 
 createRequestButton.addEventListener("click", createRequest);
 depositButton.addEventListener("click", depositPayment);
-acceptJobButton.addEventListener("click", () => simpleCall("acceptJob"));
-markCompletedButton.addEventListener("click", () => simpleCall("markCompleted"));
-refundOwnerButton.addEventListener("click", () => simpleCall("refundOwner"));
-confirmCompletionButton.addEventListener("click", () => simpleCall("confirmCompletion"));
+acceptJobButton.addEventListener("click", () => simpleCall("acceptJob", "acceptJob"));
+markCompletedButton.addEventListener("click", () => simpleCall("markCompleted", "markCompleted"));
+refundOwnerButton.addEventListener("click", () => simpleCall("refundOwner", "refundOwner"));
+confirmCompletionButton.addEventListener("click", () => simpleCall("confirmCompletion", "confirmCompletion"));
 
 // React to account / network changes
 if (window.ethereum) {
@@ -232,11 +346,19 @@ if (window.ethereum) {
     if (accounts.length === 0) {
       currentAccount = null;
       accountSpan.textContent = "Not connected";
+      currentRoleSpan.textContent = "Unknown";
+      [ownerCard, mechanicCard, inspectorCard].forEach(card =>
+        card.classList.remove("active-role")
+      );
       log("MetaMask disconnected.");
     } else {
       currentAccount = accounts[0];
       accountSpan.textContent = currentAccount;
       log("Account changed: " + currentAccount);
+      updateRoleUI();
+      if (lastStatus !== null) {
+        updateButtonStates(lastStatus);
+      }
     }
   });
 
