@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Car Repair Escrow DApp</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+  <!-- Ethers.js v5 -->
+  <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Car Repair Escrow DApp</h1>
+      <button id="connectButton">Connect MetaMask</button>
+    </header>
+
+    <section id="connectionInfo">
+      <p><strong>Account:</strong> <span id="account">Not connected</span></p>
+      <p><strong>Network:</strong> <span id="network">Unknown</span></p>
+      <p><strong>Contract:</strong> <span id="contractAddressDisplay">Not set</span></p>
+    </section>
+
+    <section id="contractState">
+      <h2>Current Request State</h2>
+      <div class="grid two">
+        <div>
+          <p><strong>Status:</strong> <span id="status">-</span></p>
+          <p><strong>Description:</strong> <span id="description">-</span></p>
+          <p><strong>Price (ETH):</strong> <span id="price">-</span></p>
+        </div>
+        <div>
+          <p><strong>Owner:</strong> <span id="owner">-</span></p>
+          <p><strong>Mechanic:</strong> <span id="mechanic">-</span></p>
+          <p><strong>Inspector:</strong> <span id="inspector">-</span></p>
+        </div>
+      </div>
+      <button id="refreshButton">Refresh State</button>
+    </section>
+
+    <section id="roles">
+      <h2>Actions</h2>
+      <div class="grid three">
+        <div class="card">
+          <h3>Owner</h3>
+          <div class="field">
+            <label for="descriptionInput">Job description</label>
+            <textarea id="descriptionInput" placeholder="Replace brake pads, fix oil leak..."></textarea>
+          </div>
+          <div class="field">
+            <label for="priceInput">Price (ETH)</label>
+            <input id="priceInput" type="number" step="0.0001" min="0" placeholder="0.5" />
+          </div>
+          <div class="field">
+            <label for="inspectorInput">Inspector address</label>
+            <input id="inspectorInput" type="text" placeholder="0x..." />
+          </div>
+          <button id="createRequestButton">Create Request</button>
+
+          <hr />
+
+          <div class="field">
+            <label for="depositInput">Deposit amount (ETH)</label>
+            <input id="depositInput" type="number" step="0.0001" min="0" placeholder="same as price" />
+          </div>
+          <button id="depositButton">Deposit Payment</button>
+        </div>
+
+        <div class="card">
+          <h3>Mechanic</h3>
+          <p>Use mechanic's MetaMask account.</p>
+          <button id="acceptJobButton">Accept Job</button>
+          <button id="markCompletedButton">Mark Completed</button>
+          <button id="refundOwnerButton">Refund Owner (cancel)</button>
+        </div>
+
+        <div class="card">
+          <h3>Inspector</h3>
+          <p>Use inspector's MetaMask account.</p>
+          <button id="confirmCompletionButton">Confirm Completion</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="logs">
+      <h2>Logs</h2>
+      <pre id="logOutput"></pre>
+    </section>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+sequenceDiagram
+    participant Owner
+    participant Mechanic
+    participant Inspector
+    participant Contract as CarRepairEscrow
+
+    Owner->>Contract: createRequest(price, description, inspector)
+    activate Contract
+    Contract-->>Owner: status = Requested
+    deactivate Contract
+
+    Mechanic->>Contract: acceptJob()
+    activate Contract
+    Contract-->>Mechanic: status = Accepted
+    deactivate Contract
+
+    Owner->>Contract: depositPayment() with ETH = price
+    activate Contract
+    Contract-->>Owner: status = Paid (funds locked)
+    deactivate Contract
+
+    Mechanic->>Contract: markCompleted()
+    activate Contract
+    Contract-->>Mechanic: status = Completed
+    deactivate Contract
+
+    Inspector->>Contract: confirmCompletion()
+    activate Contract
+    Contract-->>Mechanic: transfer price
+    Contract-->>Inspector: status = Confirmed
+    deactivate Contract
+
+    alt Cancellation before completion
+        Mechanic->>Contract: refundOwner()
+        Contract-->>Owner: refund ETH
+        Contract-->>Mechanic: status = Requested
+    end

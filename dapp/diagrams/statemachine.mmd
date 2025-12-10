@@ -1,0 +1,11 @@
+stateDiagram-v2
+    [*] --> NotCreated
+
+    NotCreated --> Requested: createRequest()
+    Requested --> Accepted: acceptJob()
+    Accepted --> Paid: depositPayment()
+    Paid --> Completed: markCompleted()
+    Completed --> Confirmed: confirmCompletion()
+
+    Accepted --> Requested: refundOwner()
+    Paid --> Requested: refundOwner()
