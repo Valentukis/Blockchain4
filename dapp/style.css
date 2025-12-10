@@ -1,62 +1,132 @@
+/* ===== Bendras stilius ===== */
+
 * {
   box-sizing: border-box;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
-body {
-  margin: 0;
-  background: #f4f5f7;
-  color: #111827;
+:root {
+  --bg: #050816;
+  --bg-elevated: rgba(15, 23, 42, 0.92);
+  --bg-elevated-soft: rgba(15, 23, 42, 0.85);
+  --border-subtle: rgba(148, 163, 184, 0.4);
+  --accent: #3b82f6;
+  --accent-soft: rgba(59, 130, 246, 0.12);
+  --accent-strong: #1d4ed8;
+  --accent-green: #22c55e;
+  --accent-green-soft: rgba(34, 197, 94, 0.18);
+  --text-main: #e5e7eb;
+  --text-muted: #9ca3af;
+  --text-soft: #6b7280;
+  --danger: #ef4444;
 }
 
-.container {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 1.5rem;
+body {
+  margin: 0;
+  background: radial-gradient(circle at top, #0f172a 0, #020617 55%, #000 100%);
+  color: var(--text-main);
 }
+
+/* ===== Layout ===== */
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.75rem 1.25rem 2.5rem;
+}
+
+/* Header */
 
 header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
+  gap: 1rem;
 }
 
 h1 {
-  font-size: 1.8rem;
+  font-size: 1.9rem;
   margin: 0;
+  letter-spacing: 0.02em;
+  color: #f9fafb;
 }
 
 h2 {
   margin-top: 0;
+  margin-bottom: 0.75rem;
+  font-size: 1.2rem;
+  color: #e5e7eb;
 }
 
+/* Buttons */
+
 button {
-  padding: 0.55rem 1rem;
-  border-radius: 6px;
-  border: none;
-  background: #2563eb;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background: linear-gradient(to right, var(--accent), var(--accent-strong));
   color: white;
   cursor: pointer;
   font-weight: 500;
+  font-size: 0.95rem;
+  letter-spacing: 0.01em;
+  transition:
+    background 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.05s ease,
+    border-color 0.15s ease;
 }
 
 button:hover:not(:disabled) {
-  background: #1d4ed8;
+  background: linear-gradient(to right, var(--accent-strong), var(--accent));
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.6);
+  transform: translateY(-1px);
+}
+
+button:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 3px 10px rgba(15, 23, 42, 0.7);
 }
 
 button:disabled {
-  background: #9ca3af;
+  background: rgba(148, 163, 184, 0.25);
+  color: #9ca3af;
   cursor: not-allowed;
+  border-color: transparent;
+  box-shadow: none;
 }
 
+/* Sections */
+
 section {
-  background: white;
-  border-radius: 10px;
-  padding: 1rem;
-  margin-bottom: 1rem;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  background: var(--bg-elevated);
+  border-radius: 16px;
+  padding: 1rem 1rem 1.2rem;
+  margin-bottom: 1.1rem;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  box-shadow:
+    0 20px 40px rgba(15, 23, 42, 0.65),
+    0 0 0 1px rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(18px);
 }
+
+/* Small details under header */
+
+#connectionInfo p {
+  margin: 0.1rem 0;
+  font-size: 0.9rem;
+}
+
+#connectionInfo strong {
+  color: #e5e7eb;
+}
+
+#connectionInfo span {
+  color: var(--text-muted);
+}
+
+/* Grid */
 
 .grid {
   display: grid;
@@ -71,101 +141,208 @@ section {
   grid-template-columns: 1fr;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 820px) {
   .grid.two {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   .grid.three {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
+/* Cards */
+
 .card {
-  padding: 0.5rem;
-  border-radius: 8px;
-  border: 1px solid #e5e7eb;
-  transition: box-shadow 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+  padding: 0.9rem;
+  border-radius: 14px;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-elevated-soft);
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.9);
+  transition:
+    box-shadow 0.18s ease,
+    border-color 0.18s ease,
+    background 0.18s ease,
+    transform 0.08s ease;
 }
+
+.card h3 {
+  margin-top: 0;
+  margin-bottom: 0.45rem;
+  font-size: 1.05rem;
+  color: #e5e7eb;
+}
+
+/* Aktyvi rolė (dabartinė paskyra) */
 
 .card.active-role {
-  border-color: #2563eb;
-  background-color: #eff6ff;
-  box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.4);
+  border-color: var(--accent);
+  background: radial-gradient(circle at top left, var(--accent-soft), var(--bg-elevated-soft));
+  box-shadow:
+    0 18px 45px rgba(37, 99, 235, 0.4),
+    0 0 0 1px rgba(59, 130, 246, 0.4);
+  transform: translateY(-1px);
 }
 
-.field {
-  display: flex;
-  flex-direction: column;
-  margin: 0.5rem 0;
-}
+/* Tekstai */
 
-.field label {
-  font-size: 0.85rem;
-  margin-bottom: 0.25rem;
-  color: #4b5563;
-}
-
-input, textarea {
-  padding: 0.45rem;
-  border-radius: 6px;
-  border: 1px solid #d1d5db;
-  font-size: 0.95rem;
-}
-
-textarea {
-  min-height: 60px;
-  resize: vertical;
-}
-
-hr {
-  border: none;
-  border-top: 1px solid #e5e7eb;
-  margin: 0.75rem 0;
+p {
+  margin: 0.25rem 0;
 }
 
 .hint {
   font-size: 0.8rem;
-  color: #6b7280;
+  color: var(--text-soft);
+  margin-bottom: 0.5rem;
 }
 
-/* Status steps */
+/* Fields */
+
+.field {
+  display: flex;
+  flex-direction: column;
+  margin: 0.55rem 0;
+}
+
+.field label {
+  font-size: 0.8rem;
+  margin-bottom: 0.2rem;
+  color: var(--text-soft);
+}
+
+input,
+textarea {
+  padding: 0.45rem 0.55rem;
+  border-radius: 10px;
+  border: 1px solid rgba(148, 163, 184, 0.6);
+  font-size: 0.95rem;
+  background: rgba(15, 23, 42, 0.85);
+  color: var(--text-main);
+  outline: none;
+  transition:
+    border-color 0.16s ease,
+    box-shadow 0.16s ease,
+    background 0.16s ease;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: rgba(148, 163, 184, 0.65);
+}
+
+input:focus,
+textarea:focus {
+  border-color: var(--accent);
+  box-shadow:
+    0 0 0 1px rgba(37, 99, 235, 0.65),
+    0 10px 25px rgba(15, 23, 42, 0.8);
+  background: rgba(15, 23, 42, 0.98);
+}
+
+textarea {
+  min-height: 70px;
+  resize: vertical;
+}
+
+/* Horizontal separator */
+
+hr {
+  border: none;
+  border-top: 1px solid rgba(148, 163, 184, 0.28);
+  margin: 0.9rem 0 0.8rem;
+}
+
+/* ===== Status „stepperis“ ===== */
 
 .status-steps {
   display: flex;
   flex-wrap: wrap;
   gap: 0.4rem;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.85rem;
 }
 
 .status-step {
   font-size: 0.75rem;
-  padding: 0.2rem 0.55rem;
+  padding: 0.18rem 0.6rem;
   border-radius: 999px;
-  border: 1px solid #d1d5db;
-  background: #f9fafb;
-  color: #4b5563;
+  border: 1px solid rgba(148, 163, 184, 0.6);
+  background: rgba(15, 23, 42, 0.9);
+  color: var(--text-soft);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
 }
 
 .status-step.active {
-  background: #2563eb;
+  background: var(--accent);
+  border-color: var(--accent-strong);
   color: white;
-  border-color: #1d4ed8;
+  box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.9);
 }
 
 .status-step.done {
-  background: #10b981;
-  color: white;
-  border-color: #059669;
+  background: var(--accent-green-soft);
+  border-color: var(--accent-green);
+  color: #bbf7d0;
 }
 
-#logs pre {
-  background: #111827;
+/* ===== Log blokas ===== */
+
+#logs h2 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#logOutput {
+  background: #020617;
   color: #e5e7eb;
-  padding: 0.75rem;
-  border-radius: 8px;
-  max-height: 250px;
+  padding: 0.7rem 0.8rem;
+  border-radius: 12px;
+  max-height: 260px;
   overflow-y: auto;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   margin: 0;
   white-space: pre-wrap;
+  border: 1px solid rgba(31, 41, 55, 0.8);
+  box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.85);
+}
+
+/* ===== Smulkus responsive pataisymai ===== */
+
+@media (max-width: 640px) {
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  header h1 {
+    font-size: 1.6rem;
+  }
+
+  button {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+  }
+}
+
+.card button {
+  margin: 0.25rem 0;
+  width: 100%;
+  text-align: center;
+}
+
+
+#mechanicCard button {
+  width: 100%;
+}
+
+.card .button-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+}
+
+.card button + button {
+  margin-top: 0.35rem;
 }
