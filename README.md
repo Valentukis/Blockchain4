@@ -184,40 +184,159 @@ Rodoma:
 
 ---
 
-## Ekrano nuotraukos
-Testavimas Remix <br />
-<img width="260" height="780" alt="Screenshot 2025-12-09 195721" src="https://github.com/user-attachments/assets/e5c2c347-457c-4ac8-94a8-3c9eb5b167f1" /> <br />
-Įrankiai <br />
-<img width="299" height="166" alt="Screenshot 2025-12-09 223422" src="https://github.com/user-attachments/assets/63674c42-a582-4733-ac0e-b9454ea477cc" /> <br />
-Ganache account dashboard <br />
-<img width="1193" height="796" alt="Screenshot 2025-12-09 224742" src="https://github.com/user-attachments/assets/448a783c-979f-4810-878b-f79a67e89f55" /> <br />
-truffle-config.js <br />
-<img width="996" height="788" alt="Screenshot 2025-12-09 225018" src="https://github.com/user-attachments/assets/7221351a-3741-4c00-b607-91076505d547" /> <br />
-Local contract deployment <br />
-<img width="685" height="566" alt="Screenshot 2025-12-09 225712" src="https://github.com/user-attachments/assets/c96ef25e-2eb7-4fc3-b56c-936ef979ffb3" /> <br />
-Ganache deployed contract view <br />
-<img width="1172" height="794" alt="Screenshot 2025-12-09 231222" src="https://github.com/user-attachments/assets/6fdc93f1-9bed-499d-8e42-1d1ed474f66f" /> <br />
-Sepolia testnet config in metamask <br />
-<img width="370" height="603" alt="Screenshot 2025-12-09 232622" src="https://github.com/user-attachments/assets/628eecdd-6c86-4be3-b254-86b121f7aaa1" /> <br />
-Token issue in Sepolia faucet <br />
-<img width="601" height="673" alt="Screenshot 2025-12-09 234251" src="https://github.com/user-attachments/assets/98b72d1c-92f4-448d-a95f-3f46699e4ae5" /> <br />
-Token issue in Sepolia faucet <br />
-<img width="1654" height="760" alt="Screenshot 2025-12-09 235743" src="https://github.com/user-attachments/assets/d4829cfb-6038-42fc-a8eb-4b4571846c5a" /> <br />
-Polygon Amoy testnet config in metamask <br />
-<img width="494" height="609" alt="Screenshot 2025-12-10 004252" src="https://github.com/user-attachments/assets/065204ac-e958-478a-b0a5-d861ae5e50dd" /> <br />
-Recieved POL from faucet <br />
-<img width="804" height="161" alt="Screenshot 2025-12-10 002213" src="https://github.com/user-attachments/assets/6e58d5da-ff61-4df3-aafb-85a54f6a3e25" /> <br />
-Truffle dashboard (after initiating deployment) <br />
-<img width="1707" height="550" alt="Screenshot 2025-12-10 003428" src="https://github.com/user-attachments/assets/0e273389-7bb8-4236-8501-d75c1753d9d7" /> <br />
-Confirmation of deployment inside dashboard (metamask popup) <br />
-<img width="374" height="596" alt="Screenshot 2025-12-10 003441" src="https://github.com/user-attachments/assets/e51608f1-f9bb-4325-92bf-4f8c837429da" /> <br />
-Our deployed contract on Amoy testnet explorer
-<img width="1299" height="738" alt="Screenshot 2025-12-10 010622" src="https://github.com/user-attachments/assets/0b845718-6e3b-4294-b639-2b9a52c6f920" /> <br />
-Testing deployed contract on amoy issue (tsg neuztenka tokens kiek duoda)
-<img width="1454" height="937" alt="Screenshot 2025-12-10 015230" src="https://github.com/user-attachments/assets/bf9841aa-d89b-462f-976c-46d451051334" /> <br />
+## Ekrano nuotraukos ir testavimo eiga
 
-Trumpai apibendrinant: Kontraktui sukurti naudotas Remix IDE, is pradziu testuojama per pati Remix naudojant ju VM, veliau per Truffle ir Ganache lokaliai. Tada bandziau paleisti i testnet (Sepolia), bet dėl pasikeitusios tvarkos neįmanoma gauti token'ų iš faucetų (reikalauja turėti kažkiek ETH wallete, į kurį norimą siųsti). Galiausiai pasirinktas Polygon Amoy testnet. Deja, šis testnet nėra toks efektyvus taip Sepolia, nes labai greitai pasibaigia token'ai (vien deployment kontrakto sunaudoja beveik viską, lieka tik view funkcijoms). Kontraktas vis tiek buvo paleistas ir patestuotas, tačiau front-endui bus naudojamas lokalus tinklas dėl šio naujo apribojimo. Prie kiekvienos foto palieku komentarą, kuris žingsnis tai buvo, integruosi šitą į readme savo nuožiūra :)
-## Išvada
+Šiame skyriuje pateikiamos pagrindinės projekto kūrimo, testavimo ir diegimo stadijos, iliustruojamos ekrano nuotraukomis. Jos atspindi visą išmaniosios sutarties kūrimo ciklą – nuo pirminio testavimo „Remix IDE“ aplinkoje iki bandymų diegti kontraktą į viešus testinius tinklus.
+
+---
+
+### Išmaniosios sutarties testavimas naudojant Remix IDE
+
+Pirmasis etapas buvo išmaniosios sutarties kūrimas ir testavimas naudojant Remix IDE. Šioje aplinkoje sutartis buvo kompiliuojama ir testuojama naudojant „Remix VM“, leidžiant greitai patikrinti pagrindinę logiką, būsenų perėjimus ir funkcijų veikimą be išorinių priklausomybių.
+
+Testavimo metu buvo:
+- tikrinamos `createRequest`, `acceptJob`, `depositPayment` ir kitos funkcijos;
+- stebimi būsenų (`status`) pasikeitimai;
+- tikrinami `event` pranešimai.
+
+<img width="260" height="780" alt="Screenshot 2025-12-09 195721" src="https://github.com/user-attachments/assets/e5c2c347-457c-4ac8-94a8-3c9eb5b167f1" />
+
+---
+
+### Naudojami įrankiai
+
+Žemiau pateikiama ekrano nuotrauka su pagrindiniais projekto metu naudotais įrankiais:
+- **Remix IDE** – išmaniosios sutarties kūrimui ir pirminiam testavimui;
+- **Truffle** – kontrakto diegimui ir migracijoms;
+- **Ganache** – lokalaus „Ethereum“ tinklo emuliacijai;
+- **MetaMask** – piniginės ir transakcijų pasirašymo integracijai;
+- **Ethers.js** – front-end sąsajai su išmaniąja sutartimi.
+
+<img width="299" height="166" alt="Screenshot 2025-12-09 223422" src="https://github.com/user-attachments/assets/63674c42-a582-4733-ac0e-b9454ea477cc" />
+
+---
+
+### Ganache paskyrų ir lokalaus tinklo peržiūra
+
+Šiame etape buvo naudojamas Ganache įrankis, leidžiantis sukurti lokalų „Ethereum“ tinklą su iš anksto sugeneruotomis paskyromis ir ETH likučiais. Tai leido saugiai ir greitai testuoti kontraktą be realių lėšų naudojimo.
+
+Ekrano nuotraukoje matomas:
+- automatiškai sugeneruotų paskyrų sąrašas;
+- jų ETH likučiai;
+- tinklo parametrai (RPC URL, Chain ID).
+
+<img width="1193" height="796" alt="Screenshot 2025-12-09 224742" src="https://github.com/user-attachments/assets/448a783c-979f-4810-878b-f79a67e89f55" />
+
+---
+
+### Truffle konfigūracija
+
+Žemiau pateikiamas `truffle-config.js` failo vaizdas, kuriame aprašyta:
+- lokalaus tinklo (`development`) konfigūracija;
+- RPC adresas;
+- naudojamas kompiliatoriaus („Solidity“) versijos nustatymas.
+
+Šis failas buvo būtinas sėkmingam kontrakto diegimui naudojant „Truffle“.
+
+<img width="996" height="788" alt="Screenshot 2025-12-09 225018" src="https://github.com/user-attachments/assets/7221351a-3741-4c00-b607-91076505d547" />
+
+---
+
+### Išmaniosios sutarties diegimas lokaliame tinkle
+
+Šiame etape kontraktas buvo sėkmingai deploy’intas į Ganache lokalų tinklą naudojant `truffle migrate`. Tai leido:
+- patikrinti migracijų scenarijų veikimą;
+- gauti realų kontrakto adresą;
+- vėliau šį adresą naudoti front-end aplikacijoje.
+
+<img width="685" height="566" alt="Screenshot 2025-12-09 225712" src="https://github.com/user-attachments/assets/c96ef25e-2eb7-4fc3-b56c-936ef979ffb3" />
+
+---
+
+### Deploy’into kontrakto peržiūra Ganache aplinkoje
+
+Šioje ekrano nuotraukoje matomas jau sėkmingai deploy’intas kontraktas Ganache sąsajoje, su:
+- kontrakto adresu;
+- transakcijų skaičiumi;
+- būsena „Deployed“.
+
+<img width="1172" height="794" alt="Screenshot 2025-12-09 231222" src="https://github.com/user-attachments/assets/6fdc93f1-9bed-499d-8e42-1d1ed474f66f" />
+
+---
+
+### Bandymas naudoti Sepolia testnet
+
+Toliau buvo bandoma perkelti kontraktą į Ethereum Sepolia testnet, sukonfigūruojant šį tinklą MetaMask piniginėje.
+
+<img width="370" height="603" alt="Screenshot 2025-12-09 232622" src="https://github.com/user-attachments/assets/628eecdd-6c86-4be3-b254-86b121f7aaa1" />
+
+Tačiau bandant gauti testinių ETH iš Sepolia faucet išryškėjo nauji apribojimai:
+- faucet reikalauja, kad piniginė jau turėtų nedidelį kiekį ETH;
+- tai apsunkina naujų projektų testavimą.
+
+<img width="601" height="673" alt="Screenshot 2025-12-09 234251" src="https://github.com/user-attachments/assets/98b72d1c-92f4-448d-a95f-3f46699e4ae5" />
+
+<img width="1654" height="760" alt="Screenshot 2025-12-09 235743" src="https://github.com/user-attachments/assets/d4829cfb-6038-42fc-a8eb-4b4571846c5a" />
+
+---
+
+### Polygon Amoy testnet alternatyva
+
+Dėl Sepolia tinklo apribojimų buvo pasirinktas **Polygon Amoy testnet** kaip alternatyva. Žemiau pateikiama MetaMask tinklo konfigūracija ir gautų testinių POL žetonų vaizdas.
+
+<img width="494" height="609" alt="Screenshot 2025-12-10 004252" src="https://github.com/user-attachments/assets/065204ac-e958-478a-b0a5-d861ae5e50dd" />
+
+<img width="804" height="161" alt="Screenshot 2025-12-10 002213" src="https://github.com/user-attachments/assets/6e58d5da-ff61-4df3-aafb-85a54f6a3e25" />
+
+---
+
+### Kontrakto diegimas per Truffle Dashboard
+
+Toliau pateikiamos ekrano nuotraukos, rodančios:
+- Truffle Dashboard inicijavimą;
+- diegimo transakcijos patvirtinimą per MetaMask;
+- sėkmingai deploy’intą kontraktą Polygon Amoy testnet „block explorer’yje“.
+
+<img width="1707" height="550" alt="Screenshot 2025-12-10 003428" src="https://github.com/user-attachments/assets/0e273389-7bb8-4236-8501-d75c1753d9d7" />
+
+<img width="374" height="596" alt="Screenshot 2025-12-10 003441" src="https://github.com/user-attachments/assets/e51608f1-f9bb-4325-92bf-4f8c837429da" />
+
+<img width="1299" height="738" alt="Screenshot 2025-12-10 010622" src="https://github.com/user-attachments/assets/0b845718-6e3b-4294-b639-2b9a52c6f920" />
+
+---
+
+### Testavimo metu aptikta problema
+
+Galiausiai testavimo metu buvo susidurta su problema, kai testinių žetonų kiekis buvo nepakankamas pilnam kontrakto testavimui, nes vienas diegimas sunaudoja didžiąją dalį suteikiamų resursų.
+
+<img width="1454" height="937" alt="Screenshot 2025-12-10 015230" src="https://github.com/user-attachments/assets/bf9841aa-d89b-462f-976c-46d451051334" />
+
+---
+
+### Testavimo apibendrinimas
+
+Apibendrinant galima teigti, kad:
+- išmanioji sutartis sėkmingai sukurta ir ištestuota lokaliai;
+- viešų testnet tinklų (Sepolia, Polygon Amoy) naudojimas susidūrė su praktiniais apribojimais;
+Dėl šių priežasčių front-end aplikacijos demonstracijai ir testavimui pasirinktas lokalus Ganache tinklas, kuris užtikrina stabilų ir pilną funkcionalumą be papildomų kaštų ar apribojimų.
+
+### DApp veikimo demonstracija    
+<img width="1996" height="1156" alt="image" src="https://github.com/user-attachments/assets/c9ffd8f3-ce52-4e12-94f5-0843353a54b8" />
+
+Decentralizuota aplikacija (DApp) šiame projekte veikia kaip naudotojo sąsaja, leidžianti
+verslo modelio dalyviams (Owner, Mechanic, Inspector) sąveikauti su išmaniąja sutartimi
+be tiesioginio darbo su blockchain įrankiais. Visa pagrindinė verslo logika,
+būsenų valdymas ir mokėjimų kontrolė yra realizuoti išmaniojoje sutartyje,
+o front-end dalis veikia tik kaip tarpinė sąsaja tarp naudotojo ir blockchain tinklo.
+Mūsų aplikacija taip pat turi log'ą, integruotą į sąsają, kad būtų lengva identifikuot pasitaikiusias klaidas.
+
+<img width="1807" height="1040" alt="image" src="https://github.com/user-attachments/assets/da5f883e-cd39-4f6d-ad0b-efa42d571fda" />
+
+
+
+
+
+## Galutinės išvados
 
 Šis projektas demonstruoja, kaip išmanioji sutartis gali pakeisti tradicinį tarpininko vaidmenį realiame verslo scenarijuje. Automatinė escrow logika užtikrina:
 
