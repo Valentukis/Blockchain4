@@ -1,104 +1,146 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="lt">
 <head>
   <meta charset="UTF-8" />
-  <title>Car Repair Escrow DApp</title>
+  <title>Automobilio remonto Escrow DApp</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="style.css" />
+
   <!-- Ethers.js v5 -->
   <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.min.js"></script>
 </head>
+
 <body>
   <div class="container">
+
     <header>
-      <h1>Car Repair Escrow DApp</h1>
-      <button id="connectButton">Connect MetaMask</button>
+      <h1>Automobilio remonto Escrow DApp</h1>
+      <button id="connectButton">Prisijungti prie MetaMask</button>
     </header>
 
     <section id="connectionInfo">
-      <p><strong>Account:</strong> <span id="account">Not connected</span></p>
-      <p><strong>Network:</strong> <span id="network">Unknown</span></p>
-      <p><strong>Contract:</strong> <span id="contractAddressDisplay">Not set</span></p>
-      <p><strong>Your role:</strong> <span id="currentRole">Unknown</span></p>
+      <p><strong>Paskyra:</strong> <span id="account">Neprisijungta</span></p>
+      <p><strong>Tinklas:</strong> <span id="network">Nežinomas</span></p>
+      <p><strong>Kontraktas:</strong> <span id="contractAddressDisplay">Nenustatytas</span></p>
+      <p><strong>Jūsų rolė:</strong> <span id="currentRole">Nežinoma</span></p>
     </section>
 
     <section id="contractState">
-      <h2>Current Request State</h2>
+      <h2>Dabartinė užklausos būsena</h2>
 
       <div class="status-steps">
-        <span class="status-step" data-status="0">NotCreated</span>
-        <span class="status-step" data-status="1">Requested</span>
-        <span class="status-step" data-status="2">Accepted</span>
-        <span class="status-step" data-status="3">Paid</span>
-        <span class="status-step" data-status="4">Completed</span>
-        <span class="status-step" data-status="5">Confirmed</span>
+        <span class="status-step" data-status="0">Nesukurta</span>
+        <span class="status-step" data-status="1">Užklausta</span>
+        <span class="status-step" data-status="2">Priimta</span>
+        <span class="status-step" data-status="3">Apmokėta</span>
+        <span class="status-step" data-status="4">Užbaigta</span>
+        <span class="status-step" data-status="5">Patvirtinta</span>
       </div>
 
       <div class="grid two">
         <div>
-          <p><strong>Status:</strong> <span id="status">-</span></p>
-          <p><strong>Description:</strong> <span id="description">-</span></p>
-          <p><strong>Price (ETH):</strong> <span id="price">-</span></p>
+          <p><strong>Būsena:</strong> <span id="status">-</span></p>
+          <p><strong>Aprašymas:</strong> <span id="description">-</span></p>
+          <p><strong>Kaina (ETH):</strong> <span id="price">-</span></p>
         </div>
         <div>
-          <p><strong>Owner:</strong> <span id="owner">-</span></p>
-          <p><strong>Mechanic:</strong> <span id="mechanic">-</span></p>
-          <p><strong>Inspector:</strong> <span id="inspector">-</span></p>
+          <p><strong>Savininkas:</strong> <span id="owner">-</span></p>
+          <p><strong>Mechanikas:</strong> <span id="mechanic">-</span></p>
+          <p><strong>Inspektorius:</strong> <span id="inspector">-</span></p>
         </div>
       </div>
-      <button id="refreshButton">Refresh State</button>
+
+      <button id="refreshButton">Atnaujinti būseną</button>
     </section>
 
     <section id="roles">
-      <h2>Actions</h2>
+      <h2>Veiksmai pagal rolę</h2>
+
       <div class="grid three">
+
+        <!-- OWNER -->
         <div class="card" id="ownerCard">
-          <h3>Owner</h3>
+          <h3>Savininkas (Owner)</h3>
+
           <div class="field">
-            <label for="descriptionInput">Job description</label>
-            <textarea id="descriptionInput" placeholder="Replace brake pads, fix oil leak..."></textarea>
+            <label for="descriptionInput">Remonto aprašymas</label>
+            <textarea
+              id="descriptionInput"
+              placeholder="Pakeisti stabdžių kaladėles, sutaisyti alyvos nuotėkį..."
+            ></textarea>
           </div>
+
           <div class="field">
-            <label for="priceInput">Price (ETH)</label>
-            <input id="priceInput" type="number" step="0.0001" min="0" placeholder="0.5" />
+            <label for="priceInput">Kaina (ETH)</label>
+            <input
+              id="priceInput"
+              type="number"
+              step="0.0001"
+              min="0"
+              placeholder="0.5"
+            />
           </div>
+
           <div class="field">
-            <label for="inspectorInput">Inspector address</label>
-            <input id="inspectorInput" type="text" placeholder="0x..." />
+            <label for="inspectorInput">Inspektoriaus adresas</label>
+            <input
+              id="inspectorInput"
+              type="text"
+              placeholder="0x..."
+            />
           </div>
-          <button id="createRequestButton">Create Request</button>
+
+          <button id="createRequestButton">Sukurti užklausą</button>
 
           <hr />
 
           <div class="field">
-            <label for="depositInput">Deposit amount (ETH)</label>
-            <input id="depositInput" type="number" step="0.0001" min="0" placeholder="same as price" />
+            <label for="depositInput">Mokėjimo suma (ETH)</label>
+            <input
+              id="depositInput"
+              type="number"
+              step="0.0001"
+              min="0"
+              placeholder="Tokia pati kaip kaina"
+            />
           </div>
-          <button id="depositButton">Deposit Payment</button>
+
+          <button id="depositButton">Pervesti mokėjimą</button>
         </div>
 
+        <!-- MECHANIC -->
         <div class="card" id="mechanicCard">
-          <h3>Mechanic</h3>
-          <p class="hint">Use mechanic's MetaMask account.</p>
-          <button id="acceptJobButton">Accept Job</button>
-          <button id="markCompletedButton">Mark Completed</button>
-          <button id="refundOwnerButton">Refund Owner (cancel)</button>
+          <h3>Mechanikas (Mechanic)</h3>
+          <p class="hint">Prisijunkite naudodami mechaniko MetaMask paskyrą.</p>
+
+          <button id="acceptJobButton">Priimti darbą</button>
+          <button id="markCompletedButton">Pažymėti kaip atliktą</button>
+          <button id="refundOwnerButton">Grąžinti lėšas savininkui</button>
         </div>
 
+        <!-- INSPECTOR -->
         <div class="card" id="inspectorCard">
-          <h3>Inspector</h3>
-          <p class="hint">Use inspector's MetaMask account.</p>
-          <button id="confirmCompletionButton">Confirm Completion</button>
+          <h3>Inspektorius (Inspector)</h3>
+          <p class="hint">Prisijunkite naudodami inspektoriaus MetaMask paskyrą.</p>
+
+          <button id="confirmCompletionButton">Patvirtinti darbų atlikimą</button>
         </div>
+
       </div>
     </section>
 
     <section id="logs">
-      <h2>Logs</h2>
+      <h2>Veiksmų žurnalas</h2>
       <pre id="logOutput"></pre>
     </section>
+
   </div>
 
+  <!-- Ethers.js (UMD) -->
+  <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+
+  <!-- Aplikacijos logika -->
   <script src="app.js"></script>
+
 </body>
 </html>

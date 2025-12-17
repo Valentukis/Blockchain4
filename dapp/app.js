@@ -1,26 +1,273 @@
-// ===== CONFIG – FILL THESE WITH REAL VALUES FROM PERSON A =====
-const CONTRACT_ADDRESS = "YOUR_CONTRACT_ADDRESS_HERE"; // Sepolia address, e.g. "0x1234..."
+// ===== KONFIGURACIJA LOKALIAM (GANACHE) TINKLUI =====
 
+// 1) Įdėk čia kontrakto adresą iš Ganache
+const CONTRACT_ADDRESS = "0xBf663B7EDa4D780dC28DE13B2f1113c881393590";
+
+// 2) Čia įklijuok pilną ABI iš CarRepairEscrow.json ("abi" masyvas)
+// ===== KONFIGURACIJA LOKALIAM (GANACHE) TINKLUI =====
+
+// 2) Čia įklijuok TIK "abi" masyvą, be "contractName" ir be "abi": rakto
 const CONTRACT_ABI = [
-  // Paste full ABI JSON array here (from CarRepairEscrow.sol deployment)
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "mechanic",
+        "type": "address"
+      }
+    ],
+    "name": "JobAccepted",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "mechanic",
+        "type": "address"
+      }
+    ],
+    "name": "JobCompleted",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "inspector",
+        "type": "address"
+      }
+    ],
+    "name": "JobConfirmed",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "PaymentDeposited",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      }
+    ],
+    "name": "Refunded",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "price",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "description",
+        "type": "string"
+      }
+    ],
+    "name": "RequestCreated",
+    "type": "event"
+  },
+  {
+    "inputs": [],
+    "name": "description",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true
+  },
+  {
+    "inputs": [],
+    "name": "inspector",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true
+  },
+  {
+    "inputs": [],
+    "name": "mechanic",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true
+  },
+  {
+    "inputs": [],
+    "name": "owner",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true
+  },
+  {
+    "inputs": [],
+    "name": "price",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true
+  },
+  {
+    "inputs": [],
+    "name": "status",
+    "outputs": [
+      {
+        "internalType": "enum CarRepairEscrow.Status",
+        "name": "",
+        "type": "uint8"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_price",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "_description",
+        "type": "string"
+      },
+      {
+        "internalType": "address",
+        "name": "_inspector",
+        "type": "address"
+      }
+    ],
+    "name": "createRequest",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "acceptJob",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "depositPayment",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function",
+    "payable": true
+  },
+  {
+    "inputs": [],
+    "name": "markCompleted",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "confirmCompletion",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "refundOwner",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
 ];
 
-// Sepolia chainId (0xaa36a7 = 11155111)
-const SEPOLIA_CHAIN_ID_HEX = "0xaa36a7";
-const ETHERSCAN_TX_BASE = "https://sepolia.etherscan.io/tx/";
+
+// Tik informacinis labelas loguose, lokaliam tinklui Etherscan nenaudojam
+const ETHERSCAN_TX_BASE = "";
+
+// Tikimės dirbti su Ganache tinklu (network id ~5777 arba 1337)
+const EXPECTED_CHAIN_ID = 1337;
 
 let provider;
 let signer;
 let contract;
 let currentAccount = null;
 
-// Latest contract state (for role / button updates)
+// Kontrakto būsena
 let contractOwner = null;
 let contractMechanic = null;
 let contractInspector = null;
 let lastStatus = null;
 
-// UI elements
+// UI elementai
 const connectButton = document.getElementById("connectButton");
 const accountSpan = document.getElementById("account");
 const networkSpan = document.getElementById("network");
@@ -48,7 +295,7 @@ const ownerCard = document.getElementById("ownerCard");
 const mechanicCard = document.getElementById("mechanicCard");
 const inspectorCard = document.getElementById("inspectorCard");
 
-// ===== Helpers =====
+// ===== Pagalbinės funkcijos =====
 
 function log(message) {
   const timestamp = new Date().toLocaleTimeString();
@@ -57,10 +304,11 @@ function log(message) {
 
 function logTx(label, tx) {
   log(`${label} tx hash: ${tx.hash}`);
-  log(`View on Etherscan: ${ETHERSCAN_TX_BASE}${tx.hash}`);
+  if (ETHERSCAN_TX_BASE) {
+    log(`Etherscan: ${ETHERSCAN_TX_BASE}${tx.hash}`);
+  }
 }
 
-// Map status code (enum) to human-readable string
 function statusToText(status) {
   const mapping = {
     0: "NotCreated",
@@ -88,10 +336,9 @@ function updateRoleUI() {
   const role = getCurrentRole();
   currentRoleSpan.textContent = role;
 
-  // Clear highlights
-  [ownerCard, mechanicCard, inspectorCard].forEach(card => {
-    card.classList.remove("active-role");
-  });
+  [ownerCard, mechanicCard, inspectorCard].forEach(card =>
+    card.classList.remove("active-role")
+  );
 
   if (role === "Owner") ownerCard.classList.add("active-role");
   if (role === "Mechanic") mechanicCard.classList.add("active-role");
@@ -112,7 +359,6 @@ function updateStatusSteps(statusNum) {
 }
 
 function updateButtonStates(statusNum) {
-  // Disable all by default
   [
     createRequestButton,
     depositButton,
@@ -120,53 +366,46 @@ function updateButtonStates(statusNum) {
     markCompletedButton,
     refundOwnerButton,
     confirmCompletionButton
-  ].forEach(btn => {
-    btn.disabled = true;
-  });
+  ].forEach(btn => (btn.disabled = true));
 
   const role = getCurrentRole();
 
-  // Logic based on contract rules
-  if (role === "Owner") {
-    // createRequest: only in NotCreated
-    if (statusNum === 0) {
-      createRequestButton.disabled = false;
-    }
-    // depositPayment: only in Accepted
-    if (statusNum === 2) {
-      depositButton.disabled = false;
-    }
+  // ✅ 1) createRequest galima daryti bet kam, kai NotCreated
+  // (owner atsiranda tik po createRequest)
+  if (statusNum === 0) {
+    createRequestButton.disabled = false;
   }
 
+  // ✅ 2) acceptJob galima daryti bet kam, kai Requested
+  // (mechanic atsiranda tik po acceptJob)
+  if (statusNum === 1) {
+    acceptJobButton.disabled = false;
+  }
+
+  // ✅ 3) depositPayment – tik Owner ir tik kai Accepted
+  if (role === "Owner" && statusNum === 2) {
+    depositButton.disabled = false;
+  }
+
+  // ✅ 4) Likę veiksmai jau priklauso nuo rolės, nes rolės tuo metu egzistuoja
   if (role === "Mechanic") {
-    // acceptJob: Requested
-    if (statusNum === 1) {
-      acceptJobButton.disabled = false;
-    }
-    // markCompleted: Paid
-    if (statusNum === 3) {
-      markCompletedButton.disabled = false;
-    }
-    // refundOwner: Accepted or Paid
-    if (statusNum === 2 || statusNum === 3) {
-      refundOwnerButton.disabled = false;
-    }
+    if (statusNum === 3) markCompletedButton.disabled = false;
+    if (statusNum === 2 || statusNum === 3) refundOwnerButton.disabled = false;
   }
 
-  if (role === "Inspector") {
-    // confirmCompletion: Completed
-    if (statusNum === 4) {
-      confirmCompletionButton.disabled = false;
-    }
+  if (role === "Inspector" && statusNum === 4) {
+    confirmCompletionButton.disabled = false;
   }
 }
 
-// ===== Connection logic =====
+
+
+// ===== Prisijungimas su MetaMask (per Ganache) =====
 
 async function connectWallet() {
   try {
     if (!window.ethereum) {
-      alert("MetaMask not found. Please install it.");
+      alert("MetaMask nerastas. Įsidiek pluginą.");
       return;
     }
 
@@ -176,47 +415,42 @@ async function connectWallet() {
     currentAccount = accounts[0];
     accountSpan.textContent = currentAccount;
 
+    // ethers v5 Web3Provider – naudos MetaMask RPC (Ganache)
     provider = new ethers.providers.Web3Provider(window.ethereum);
     signer = provider.getSigner();
 
     const network = await provider.getNetwork();
-    networkSpan.textContent = `${network.name} (${network.chainId})`;
+    networkSpan.textContent = `${network.name || "local"} (${network.chainId})`;
 
-    // Warn if not on Sepolia
-    if (network.chainId !== 11155111) {
-      log("Wrong network. Trying to switch to Sepolia...");
-      try {
-        await window.ethereum.request({
-          method: "wallet_switchEthereumChain",
-          params: [{ chainId: SEPOLIA_CHAIN_ID_HEX }]
-        });
-        log("Switched to Sepolia. Please reconnect if needed.");
-      } catch (switchError) {
-        log("Failed to switch network: " + switchError.message);
-      }
+    if (network.chainId !== EXPECTED_CHAIN_ID) {
+      log(
+        `Dėmesio: prisijungta prie chainId ${network.chainId}, tikimasi ${EXPECTED_CHAIN_ID} (Ganache). Patikrink MetaMask tinklą.`
+      );
+    } else {
+      log("Prisijungta prie lokalaus Ganache tinklo.");
     }
 
     if (!CONTRACT_ADDRESS || CONTRACT_ADDRESS === "YOUR_CONTRACT_ADDRESS_HERE") {
-      log("⚠️ Please configure CONTRACT_ADDRESS and CONTRACT_ABI in app.js");
+      log("⚠️ Pirmiausia sukonfigūruok CONTRACT_ADDRESS ir CONTRACT_ABI app.js faile.");
       return;
     }
 
     contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
     contractAddressDisplay.textContent = CONTRACT_ADDRESS;
 
-    log("Wallet connected. Contract initialized.");
+    log("Wallet prijungtas. Kontraktas inicializuotas.");
     await loadContractState();
   } catch (err) {
     console.error(err);
-    log("Error connecting wallet: " + err.message);
+    log("Klaida jungiantis: " + err.message);
   }
 }
 
-// ===== State loading =====
+// ===== Kontrakto būsenos nuskaitymas =====
 
 async function loadContractState() {
   if (!contract) {
-    log("Contract not initialized.");
+    log("Kontraktas dar neinicijuotas.");
     return;
   }
 
@@ -248,67 +482,61 @@ async function loadContractState() {
     updateRoleUI();
     updateButtonStates(statusNum);
 
-    log("Contract state refreshed.");
+    log("Kontrakto būsena atnaujinta.");
   } catch (err) {
     console.error(err);
-    log("Error loading contract state: " + (err.data?.message || err.message));
+    log("Klaida skaitant būseną: " + (err.data?.message || err.message));
   }
 }
 
-// ===== Actions =====
+// ===== Veiksmai =====
 
 async function createRequest() {
   if (!contract) return;
 
-  const descriptionInput = document.getElementById("descriptionInput");
-  const priceInput = document.getElementById("priceInput");
-  const inspectorInput = document.getElementById("inspectorInput");
-
-  const desc = descriptionInput.value.trim();
-  const priceEth = priceInput.value.trim();
-  const inspectorAddr = inspectorInput.value.trim();
+  const desc = document.getElementById("descriptionInput").value.trim();
+  const priceEth = document.getElementById("priceInput").value.trim();
+  const inspectorAddr = document.getElementById("inspectorInput").value.trim();
 
   if (!desc || !priceEth || !inspectorAddr) {
-    alert("Please fill description, price and inspector address.");
+    alert("Užpildyk aprašymą, kainą ir inspektoriaus adresą.");
     return;
   }
 
   try {
     const priceWei = ethers.utils.parseEther(priceEth);
-    log("Sending createRequest transaction...");
+    log("Vykdome createRequest...");
     const tx = await contract.createRequest(priceWei, desc, inspectorAddr);
     logTx("createRequest", tx);
     const receipt = await tx.wait();
-    log(`createRequest confirmed in block ${receipt.blockNumber}`);
+    log(`createRequest patvirtinta bloke ${receipt.blockNumber}`);
     await loadContractState();
   } catch (err) {
     console.error(err);
-    log("Error in createRequest: " + (err.data?.message || err.message));
+    log("Klaida createRequest: " + (err.data?.message || err.message));
   }
 }
 
 async function depositPayment() {
   if (!contract) return;
 
-  const depositInput = document.getElementById("depositInput");
-  const amountEth = depositInput.value.trim();
-
+  const amountEth = document.getElementById("depositInput").value.trim();
   if (!amountEth) {
-    alert("Please enter deposit amount in ETH (must equal price).");
+    alert("Įvesk depozito sumą ETH (turi lygiuotis su price).");
     return;
   }
 
   try {
     const valueWei = ethers.utils.parseEther(amountEth);
-    log("Sending depositPayment transaction...");
+    log("Vykdome depositPayment...");
     const tx = await contract.depositPayment({ value: valueWei });
     logTx("depositPayment", tx);
     const receipt = await tx.wait();
-    log(`depositPayment confirmed in block ${receipt.blockNumber}`);
+    log(`depositPayment patvirtinta bloke ${receipt.blockNumber}`);
     await loadContractState();
   } catch (err) {
     console.error(err);
-    log("Error in depositPayment: " + (err.data?.message || err.message));
+    log("Klaida depositPayment: " + (err.data?.message || err.message));
   }
 }
 
@@ -316,19 +544,19 @@ async function simpleCall(methodName, label) {
   if (!contract) return;
 
   try {
-    log(`Sending ${label} transaction...`);
+    log(`Vykdome ${label}...`);
     const tx = await contract[methodName]();
     logTx(label, tx);
     const receipt = await tx.wait();
-    log(`${label} confirmed in block ${receipt.blockNumber}`);
+    log(`${label} patvirtinta bloke ${receipt.blockNumber}`);
     await loadContractState();
   } catch (err) {
     console.error(err);
-    log(`Error in ${label}: ` + (err.data?.message || err.message));
+    log(`Klaida ${label}: ` + (err.data?.message || err.message));
   }
 }
 
-// ===== Event listeners =====
+// ===== Event listeneriai =====
 
 connectButton.addEventListener("click", connectWallet);
 refreshButton.addEventListener("click", loadContractState);
@@ -340,9 +568,8 @@ markCompletedButton.addEventListener("click", () => simpleCall("markCompleted", 
 refundOwnerButton.addEventListener("click", () => simpleCall("refundOwner", "refundOwner"));
 confirmCompletionButton.addEventListener("click", () => simpleCall("confirmCompletion", "confirmCompletion"));
 
-// React to account / network changes
 if (window.ethereum) {
-  window.ethereum.on("accountsChanged", (accounts) => {
+  window.ethereum.on("accountsChanged", accounts => {
     if (accounts.length === 0) {
       currentAccount = null;
       accountSpan.textContent = "Not connected";
@@ -350,20 +577,17 @@ if (window.ethereum) {
       [ownerCard, mechanicCard, inspectorCard].forEach(card =>
         card.classList.remove("active-role")
       );
-      log("MetaMask disconnected.");
+      log("MetaMask atsijungė.");
     } else {
       currentAccount = accounts[0];
       accountSpan.textContent = currentAccount;
-      log("Account changed: " + currentAccount);
+      log("Paskyra pakeista: " + currentAccount);
       updateRoleUI();
-      if (lastStatus !== null) {
-        updateButtonStates(lastStatus);
-      }
+      if (lastStatus !== null) updateButtonStates(lastStatus);
     }
   });
 
-  window.ethereum.on("chainChanged", (_chainId) => {
-    // Hard reload
+  window.ethereum.on("chainChanged", () => {
     window.location.reload();
   });
 }
