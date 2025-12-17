@@ -320,6 +320,22 @@ Apibendrinant galima teigti, kad:
 - viešų testnet tinklų (Sepolia, Polygon Amoy) naudojimas susidūrė su praktiniais apribojimais;
 Dėl šių priežasčių front-end aplikacijos demonstracijai ir testavimui pasirinktas lokalus Ganache tinklas, kuris užtikrina stabilų ir pilną funkcionalumą be papildomų kaštų ar apribojimų.
 
+### DApp veikimo demonstracija    
+<img width="1996" height="1156" alt="image" src="https://github.com/user-attachments/assets/c9ffd8f3-ce52-4e12-94f5-0843353a54b8" />
+
+Decentralizuota aplikacija (DApp) šiame projekte veikia kaip naudotojo sąsaja, leidžianti
+verslo modelio dalyviams (Owner, Mechanic, Inspector) sąveikauti su išmaniąja sutartimi
+be tiesioginio darbo su blockchain įrankiais. Visa pagrindinė verslo logika,
+būsenų valdymas ir mokėjimų kontrolė yra realizuoti išmaniojoje sutartyje,
+o front-end dalis veikia tik kaip tarpinė sąsaja tarp naudotojo ir blockchain tinklo.
+Mūsų aplikacija taip pat turi log'ą, integruotą į sąsają, kad būtų lengva identifikuot pasitaikiusias klaidas.
+
+<img width="1807" height="1040" alt="image" src="https://github.com/user-attachments/assets/da5f883e-cd39-4f6d-ad0b-efa42d571fda" />
+
+
+
+
+
 ## Galutinės išvados
 
 Šis projektas demonstruoja, kaip išmanioji sutartis gali pakeisti tradicinį tarpininko vaidmenį realiame verslo scenarijuje. Automatinė escrow logika užtikrina:
